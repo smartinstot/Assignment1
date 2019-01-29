@@ -37,7 +37,7 @@ tmax = dt*steps; % s, simulation stop time
 
 % Inialize State variables
 [P_x, P_y] = inital_placement(N, size_x, size_y);
-[V_x, V_y] = thermal_velocity(N, vth);
+[V_x, V_y] = thermal_velocity(N, T, mn);
 
 f_path = figure('Name', 'Particle Path');
 hold on;
@@ -68,6 +68,10 @@ title('Average Temperature');
 xlabel('Time (s)');
 ylabel('Temperature (C)');
 
+f_hist = figure('Name', 'Velocity');
+hold on;
+xlabel('Velocity (m/s)');
+ylabel('Number of Particles');
 
 % Simulation loop
 for n=0:(steps-1)
@@ -93,6 +97,9 @@ for n=0:(steps-1)
 
     subplot(3,1,3);
     plot(t, mean((V_x.^2 + V_y.^2)*mn/2/physconst('Boltzmann')), 'xr');
+
+    figure(f_hist);
+    histogram(sqrt(V_x.^2 + V_y.^2), N/10, 'FaceColor', 'b');
     
 
     pause(0.01);
