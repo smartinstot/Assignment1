@@ -29,6 +29,7 @@ size_y = 100E-9; % m
 % Calculated values
 vth = sqrt(2*physconst('Boltzmann')*T/mn); % mean thermal velocity
 lambda = vth*Tmn; % mean free path
+Pscat = 1 - exp(-dt/Tmn);
 
 % randomly select the indexes which we are going to plot
 index_plot = randperm(N, N_plot);
@@ -69,7 +70,6 @@ xlabel('Time (s)');
 ylabel('Temperature (C)');
 
 f_hist = figure('Name', 'Velocity');
-hold on;
 xlabel('Velocity (m/s)');
 ylabel('Number of Particles');
 
@@ -78,6 +78,10 @@ for n=0:(steps-1)
     t = n*dt;
     P_x_old = P_x;
     P_y_old = P_y;
+
+    % Scatter 
+    temp = rand(N,1) > Pscat;
+    [V_x(temp) V_y(temp)] = thermal_velocity(sum(temp), T, mn);
 
     % Laws of motion
     P_x = P_x + V_x*dt;
