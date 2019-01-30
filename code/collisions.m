@@ -10,10 +10,13 @@
 function [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y)
     % Reflect off top and bottom
     V_y(P_y > size_y | P_y < 0) = -V_y(P_y > size_y | P_y < 0);
+    P_y(P_y < 0) = 0;
+    P_y(P_y > size_y) = size_y;
 
     % Wrap around left and right sides 
     P_x(P_x > size_x) = 0;
     P_x(P_x < 0) = size_x;
+
 end
 
 
