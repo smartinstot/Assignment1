@@ -32,8 +32,8 @@ function [V_x, V_y] = thermal_velocity(N, T, mn)
     % a random number for the x and y directions,
     % normalize, then multiply each velocity by
     % that
-    temp_x = rand(N,1);
-    temp_y = rand(N,1);
+    temp_x = 2*rand(N,1) - 1;
+    temp_y = 2*rand(N,1) - 1;
     temp = sqrt(temp_x.^2 + temp_y.^2);
     temp_x = temp_x./temp;
     temp_y = temp_y./temp;
