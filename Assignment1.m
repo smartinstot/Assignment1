@@ -124,3 +124,15 @@ for n=0:(steps-1)
 
     [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec);
 end
+
+f_eldn = figure('Name', 'Electron Density');
+n = hist3([P_x, P_y], 'Nbins', [N/10,N/10]);
+pcolor(n);
+
+% Save all plots to image files
+saveas(f_plot, 'Simulation_Data.png');
+saveas(f_path, 'Particle_Path.png');
+saveas(f_hist, 'Velocity.png');
+saveas(f_eldn, 'Electron_Density.png');
+
+close all;
