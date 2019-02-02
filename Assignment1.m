@@ -7,26 +7,36 @@
 % Top level file which runs simulation       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-addpath code
 
-% Paramaters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% User Paramaters %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T = 300; % K, Temperature
 m0 = 9.109383E-31; % Kg, rest mass of electron
 mn = 0.26*m0; % effective mass of electron
 Tmn = 0.2E-12; % s, mean time between collisions
 
-steps = 1000; % Run simulation for 1000 steps
-dt = 200E-9/1E6; % s, simulation step time
+steps = 1000; % Run simulation for 100 steps
+dt = 200E-9/1E8; % s, simulation step time
 
 N = 100; % Number of particles
-N_plot = 5; % Number of particles to show in motion plot
+N_plot = 10; % Number of particles to show in motion plot
 
 % Simulation bounds
 size_x = 200E-9; % m
-size_y = 100E-9; % m
+size_y = 200E-9; % m
 
+% Rectangles
+%       pos_x       pos_y       width       height
+rec = [ 080E-9      000E-9      040E-9      080E-9   ;
+        080E-9      120E-9      040E-9      080E-9   ];
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% End User Paramaters %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Calculated values
+addpath code
 vth = sqrt(2*physconst('Boltzmann')*T/mn); % mean thermal velocity
 lambda = vth*Tmn; % mean free path
 Pscat = 1 - exp(-dt/Tmn);
@@ -37,7 +47,7 @@ index_plot = randperm(N, N_plot);
 tmax = dt*steps; % s, simulation stop time
 
 % Inialize State variables
-[P_x, P_y] = inital_placement(N, size_x, size_y);
+[P_x, P_y] = inital_placement(N, size_x, size_y, rec);
 [V_x, V_y] = thermal_velocity(N, T, mn);
 
 f_path = figure('Name', 'Particle Path');
@@ -80,7 +90,7 @@ for n=0:(steps-1)
     P_y_old = P_y;
 
     % Scatter 
-    temp = rand(N,1) > Pscat;
+    temp = Pscat > rand(N,1);
     [V_x(temp) V_y(temp)] = thermal_velocity(sum(temp), T, mn);
 
     % Laws of motion
@@ -90,6 +100,10 @@ for n=0:(steps-1)
     % Plot path of particle
     figure(f_path);
     motion_plot(P_x_old(index_plot), P_x(index_plot), P_y_old(index_plot), P_y(index_plot));
+    temp = size(rec);
+    for i=1:temp(1)
+        rectangle('Position', rec(i,:));
+    end
 
     figure(f_plot);
 
@@ -108,5 +122,5 @@ for n=0:(steps-1)
 
     pause(0.01);
 
-    [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y);
+    [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec);
 end

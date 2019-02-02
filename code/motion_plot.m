@@ -9,6 +9,6 @@
 function motion_plot(P_x_old, P_x, P_y_old, P_y)
     colours = 'gbkymcr'; 
     for i = 1:length(P_x)
-        plot([P_x_old(i) P_x(i)], [P_y_old(i) P_y(i)], colours(mod(i, length(colours))));
+        plot([P_x_old(i) P_x(i)], [P_y_old(i) P_y(i)], colours(mod(i, length(colours))+1));
     end
 end
