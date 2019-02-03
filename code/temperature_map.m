@@ -8,7 +8,7 @@
 % Calculates the temperature map and plots it%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function temperature_map(V_x, V_y, P_x, P_y, size_x, size_y, mn)
-    Nbins = length(V_x)/20;
+    Nbins = ceil(log(length(V_x)));
     sx = size_x/Nbins;
     sy = size_y/Nbins;
     Temps = zeros(Nbins);
