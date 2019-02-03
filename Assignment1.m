@@ -131,10 +131,14 @@ f_eldn = figure('Name', 'Electron Density');
 n = hist3([P_x, P_y], 'Nbins', [N/10,N/10]);
 pcolor(n);
 
+f_temp = figure('Name', 'Temperature');
+temperature_map(V_x, V_y, P_x, P_y, size_x, size_y, mn);
+
 % Save all plots to image files
 saveas(f_plot, 'Simulation_Data.png');
 saveas(f_path, 'Particle_Path.png');
 saveas(f_hist, 'Velocity.png');
 saveas(f_eldn, 'Electron_Density.png');
+saveas(f_temp, 'Temperature.png');
 
 close all;
