@@ -31,6 +31,8 @@ size_y = 200E-9; % m
 rec = [ 080E-9      000E-9      040E-9      080E-9   ;
         080E-9      120E-9      040E-9      080E-9   ];
 
+collision_type = 1; % 0 = specular, 1 = diffusive
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%% End User Paramaters %%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,7 +124,7 @@ for n=0:(steps-1)
 
     pause(0.01);
 
-    [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec);
+    [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec, collision_type, T, mn);
 end
 
 f_eldn = figure('Name', 'Electron Density');

@@ -7,9 +7,14 @@
 % Calculates the collisions at each step and %
 % updates velocity and position accordingly  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec)
+function [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, rec, collision_type, T, mn)
     % Reflect off top and bottom
-    V_y(P_y > size_y | P_y < 0) = -V_y(P_y > size_y | P_y < 0);
+    co = P_y > size_y | P_y < 0;
+    if (collision_type)
+        [V_x(co) V_y(co)] = thermal_velocity(sum(co), T, mn);
+    else
+        V_y(co) = -V_y(co);
+    end
     P_y(P_y < 0) = 0;
     P_y(P_y > size_y) = size_y;
 
@@ -19,8 +24,12 @@ function [V_x, V_y, P_x, P_y] = collisions(V_x, V_y, P_x, P_y, size_x, size_y, r
     
     % Check for collisions on rectangles
     collided = rec_collisions(P_x, P_y, rec);
-    V_x(collided == 1) = - V_x(collided == 1);
-    V_y(collided == 2) = - V_y(collided == 2);
+    if (collision_type)
+        [V_x(collided ~= 0) V_y(collided ~= 0)] = thermal_velocity(sum(collided ~= 0), T, mn);
+    else
+        V_x(collided == 1) = - V_x(collided == 1);
+        V_y(collided == 2) = - V_y(collided == 2);
+    end
 end
 
 
